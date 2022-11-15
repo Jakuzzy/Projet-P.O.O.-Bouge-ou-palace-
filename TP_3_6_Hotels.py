@@ -19,7 +19,7 @@ class Chambre :
     def __init__(self, numero, etage, capacite, est_propre, est_occupee, tarif, a_vue_mer) :
         self.numero = numero
         self.etage = etage
-        self.capacite = capacite
+        self.capacite = max(min(capacite,3),1)
         self.est_propre = est_propre
         self.est_occupee = est_occupee
         self.tarif = tarif
