@@ -59,7 +59,6 @@ class Chambre :
         """"""
         pass
         return None
-
 class Hotel :
     """
     Chaque instance de Hotel possède comme attributs :
@@ -75,5 +74,31 @@ class Hotel :
     -	Des méthodes permettant d’accéder à chacun des attributs.
     """
 
-    def __init__(self, nom, ville, adresse, chambres, a_piscine):
-        self.
+    def __init__(self, nom, ville, adresse, a_piscine = False):
+        self.nom = nom
+        self.ville = ville
+        self.adresse = adresse
+        self.chambres = []
+        self.a_piscine = a_piscine
+
+    def get_nom(self):
+        return self.nom
+    def get_ville(self):
+        return self.ville
+    def get_adresse(self):
+        return self.adresse
+    def get_chambres(self):
+        return self.chambres
+    def get_a_piscine(self):
+        return self.a_piscine
+
+    def get_dispo(self):
+        chambres_non_occupee = 0
+        for chambre in self.chambres:
+            if not chambre.get_est_occupee():
+                chambres_non_occupee +=1
+        return chambres_non_occupee
+
+    def	nettoyer(self) :
+        """fait le ménage dans toutes les chambres de cet hôtel"""
+        return None
