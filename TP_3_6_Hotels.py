@@ -76,4 +76,4 @@ class Hotel :
     """
 
     def __init__(self, nom, ville, adresse, chambres, a_piscine):
-        self
+        self.
