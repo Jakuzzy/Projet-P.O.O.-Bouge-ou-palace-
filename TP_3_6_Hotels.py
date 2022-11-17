@@ -16,12 +16,12 @@ class Chambre :
     -	payer()
     -	Des méthodes permettant d’accéder à chacun des attributs.
     """
-    def __init__(self, numero, etage, capacite, est_propre, est_occupee, tarif, a_vue_mer) :
+    def __init__(self, numero, etage, capacite, tarif, a_vue_mer) :
         self.numero = numero
         self.etage = etage
         self.capacite = max(min(capacite,3),1)
-        self.est_propre = est_propre
-        self.est_occupee = est_occupee
+        self.est_propre = True
+        self.est_occupee = False
         self.tarif = tarif
         self.a_vue_mer = a_vue_mer
 
