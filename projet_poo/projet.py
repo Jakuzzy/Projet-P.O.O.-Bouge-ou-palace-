@@ -1,4 +1,5 @@
 import comptes_bancaires as cb
+import random as r
 
 class Chambre :
     """
@@ -69,6 +70,7 @@ class Chambre :
     def	liberer(self) :
         """Déclare la chambre non-occupée"""
         self.est_occupee = False
+        self.est_propre = False
         return None
 
 
@@ -88,7 +90,7 @@ class Hotel :
     -	Des méthodes permettant d’accéder à chacun des attributs.
     """
 
-    def __init__(self, nom:str, ville:str, adresse:str, chambres:list, solde_compte_hotel:int=0 , a_piscine:bool=False):
+    def __init__(self, nom:str, ville:str, adresse:str, chambres:list, solde_compte_hotel:int=0, a_piscine:bool=False):
         """Créé un nouvel Hotel()"""
         self.nom = nom
         self.ville = ville
@@ -140,7 +142,11 @@ class Hotel :
         """Ajoute chambres à la liste de chambres de l'hôtel"""
         self.chambres += chambres
 
-    def	nettoyer(self) :
+    def nb_chambres(self):
+        """Renvoie le nombre de chambres de l'hotel"""
+        return len(self.chambres)
+
+    def	nettoyer_chambres(self) :
         """Fait le ménage dans toutes les chambres de l'hôtel"""
         for chambre in self.chambres:
             chambre.nettoyer()
@@ -148,14 +154,25 @@ class Hotel :
 
     def	payer(self, numero:int, etage:int, compte):
         """Paie la chambre correspondant à l'étage et au numéro donnés avec compte"""
-        chambre = get_chambre(numero,etage)
+        chambre = self.get_chambre(numero,etage)
         if chambre:
             compte.transferer(self.compte,chambre.tarif)
         return None
 
 def test_hotel():
     liste_chambres = []
-    for i in range(3):
-        for j in range(10):
-            liste_chambres.append(Chambre(j,i,2,78.50,False))
-    pass
+    for etage in range(3):
+        for numero in range(10):
+            liste_chambres.append(Chambre(numero,etage,2,78.50,False))
+    mon_hotel = Hotel('Hotel California','Vesoul','40 rue du Général',liste_chambres,150000,True)
+    for _ in range(10):
+        chambre = r.choice(mon_hotel.chambres)
+        chambre.prendre()
+    print("Nombre de chambres d'hotel :",mon_hotel.nb_chambres())
+    print('Chambres disponibles :',mon_hotel.get_dispo())
+    mon_compte = cb.CompteBancaire('1234',7500)
+    print('Solde hotel avant :',mon_hotel.get_compte().get_solde())
+    mon_hotel.payer(7,2,mon_compte)
+    print('Solde hotel après :',mon_hotel.get_compte().get_solde())
+
+test_hotel()
