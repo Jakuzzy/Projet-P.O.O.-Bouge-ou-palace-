@@ -1,4 +1,4 @@
-﻿import random as rd
+import random as rd
 
 """
 Règles du Blackjack :
@@ -135,44 +135,33 @@ def affichage(main,cache=False):
 
 
 
-def blackjack(bourse):
+def blackjack(mise=0):
     """
-    Lance une partie de Blackjack avec le visuel des cartes dans la console (agrandir la taille de la console au préalable).
+    Lance une partie de Blackjack avec le visuel des cartes dans la console, renvoie la mise donnée et le gain obtenu (agrandir la taille de la console au préalable).
     """
     main_joueur,main_croupier = tirage(),tirage() #fait 2 tirage de 2 cartes, pour le joueur et le croupier
     total_joueur,total_croupier, = total(main_joueur),total(main_croupier) #fait les totaux des mains du joueur et du croupier
-
-    mise = int(input("Quelle somme voulez-vous miser ? [nb] "))
     if mise < 0:
         mise = 0
-    elif mise > bourse:
-        mise = bourse
-    bourse -= mise # La mise est soustraite de la bourse du joueur
-
 
     print("\n1er tour :\n") #affiche les mains en cachant la 2eme carte du croupier et le total de la main du joueur pour le 1er tour
     print("La main du croupier :")
     print(affichage(main_croupier,True))
     print("Votre main :")
-    print(affichage(main_joueur),"Total de vos cartes :",total_joueur,'\n',"Bourse : ",bourse,"\t Mise : ",mise,'\n')
+    print(affichage(main_joueur),"Total de vos cartes :",total_joueur,'\n',"Votre mise :",mise,'\n')
 
     if total_joueur == 21:
-        bourse += mise*1.5 #joueur récupère x1.5 sa mise
-        print("Vous gagnez en obtenant un Blackjack !") #victoire en ayant 21 points dès le premier tirage
+        gain = mise*1.5 #joueur récupère x1.5 sa mise
+        print("Vous gagnez en obtenant un Blackjack ! Vous remportez une fois et demi votre mise !") #victoire en ayant 21 points dès le premier tirage
     else:
         suite = input("Que voulez-vous faire ? [O]btenir des cartes/[G]arder ses cartes/[D]oubler la mise et obtenir une carte ") #demande si le joueur veut des cartes supplémentaires
         if suite.lower() == 'o':
-            nb_cartes = int(input("Combien de cartes voulez-vous ? [nb] ")) #demande le nombre de cartes voulu par le joueur et les rajoute à la main, puis recalcule le total
-            main_joueur += tirage(nb_cartes)
+            nb_cartes = int(input("Combien de cartes voulez-vous (pas plus de 10 cartes supplémentaires) ? [nb] ")) #demande le nombre de cartes voulu par le joueur et les rajoute à la main, puis recalcule le total
+            main_joueur += tirage(min(10,nb_cartes))
             total_joueur = total(main_joueur)
 
         elif suite.lower() == 'd':
-            if mise > bourse: # Si la bourse ne contient pas asser de points pour doubler la mise, la bourse est entièrement joué
-                mise += bourse
-                bourse = 0
-            else : # Autrement on soustrait la mise à la bourse puis on double la première
-                bourse -= mise
-                mise *= 2
+            mise *= 2
             main_joueur += tirage(1)
             total_joueur = total(main_joueur)
 
@@ -184,24 +173,15 @@ def blackjack(bourse):
         print("La main du croupier :")
         print(affichage(main_croupier),"Total des cartes du croupier :",total_croupier,'\n')
         print("Votre main :")
-        print(affichage(main_joueur),"Total de vos cartes :",total_joueur,'\n',"Bourse : ",bourse,"\t Mise : ",None,'\n')
-        if total_joueur <= 21 and (total_joueur > total_croupier or total_croupier > 21): #conditions pour gagner
-            bourse += mise*2 #joueur récupère x2 sa mise
-            print("Vous avez gagné !")
-        elif total_croupier == total_joueur or (total_croupier > 21 and total_joueur > 21): #conditions si il n'y a pas de gagnant
-            bourse += mise #joueur récupère sa mise
-            print("Il n'y a aucun gagnant.")
-        else: #sinon défaite : joueur ne récupère pas sa mise
-            print("Vous avez perdu.")
-    if bourse <= 0: #Si la bourse est vide, le jeu cesse
-        print('Vous êtes à sec !')
-    else:
-        rejouer = input("Voulez-vous rejouer ? [Y/N] ")
-        if rejouer.lower() == 'y':
-            blackjack_v3(bourse)
-    return None
+        print(affichage(main_joueur),"Total de vos cartes :",total_joueur,'\n',"Votre mise :",mise,'\n')
 
-jouer = input("Voulez-vous jouer au Blackjack ? [Y/N] ") # Lancement de la partie
-if jouer.lower() == 'y':
-    bourse = int(input("Quelle est votre bourse ? [nb] "))
-    blackjack_v3(bourse)
+        if total_joueur <= 21 and (total_joueur > total_croupier or total_croupier > 21): #conditions pour gagner
+            gain = mise*2 #joueur récupère x2 sa mise
+            print("Vous avez gagné ! Vous remportez le double de votre mise !")
+        elif total_croupier == total_joueur or (total_croupier > 21 and total_joueur > 21): #conditions si il n'y a pas de gagnant
+            gain = mise #joueur récupère sa mise
+            print("Il n'y a aucun gagnant. Vous repartez avec votre mise.")
+        else: #sinon défaite : joueur ne récupère pas sa mise
+            gain = 0
+            print("Vous avez perdu. Vous repartez bredouille.")
+    return mise, gain
