@@ -1,4 +1,4 @@
-import random as rd
+﻿import random as rd
 
 """
 Règles du Blackjack :
@@ -14,7 +14,8 @@ Règles du Blackjack :
     pas 21, ou alors il n'y a pas de gagnant car le total de la main du joueur est égal à celui du croupier ou que les deux dépasse 21 et enfin sinon le
     joueur a perdu.
     Mise: le joueur peux choisir de miser avant de recevoir ses cartes puis doubler sa mise en prenant UNE carte supplémentaire.
-    Le joueur gagne respectivement x1.5 sa mise si il obtient un blackjack au premier tirage, x2 sa mise si il gagne sans bj ou récupère sa mise si il n'y a pas de gagnant.
+    Le joueur gagne respectivement x1.5 sa mise si il obtient un blackjack au premier tirage, x2 sa mise si il gagne sans bj ou récupère sa mise si il n'y a
+    pas de gagnant.
 """
 
 #listes utilisées pour faire les tirages de cartes

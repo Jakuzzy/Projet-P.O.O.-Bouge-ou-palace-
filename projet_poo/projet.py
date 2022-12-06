@@ -1,6 +1,26 @@
-import comptes_bancaires as cb
-import random as r
-import blackjack as b
+﻿import comptes_bancaires as cb
+import random as rd
+import blackjack as bj
+
+class Client:
+    """Classe défini par :
+            - son nom
+            - son adresse"""
+
+    def __init__(self,nom,adresse):
+        """Créer un nouveau Client()"""
+        self.nom = nom
+        self.adresse = adresse
+
+    def get_nom(self):
+        """Obtenir le nom du client"""
+        return self.nom
+
+    def get_adresse(self):
+        """Obtenir l'adresse du client"""
+        return self.adresse
+
+
 
 class Chambre :
     """
@@ -29,6 +49,7 @@ class Chambre :
         self.est_occupee = False
         self.tarif = tarif
         self.a_vue_mer = a_vue_mer
+        self.client = None
 
     def get_numero(self):
         """Renvoie le numéro de la chambre"""
@@ -63,16 +84,32 @@ class Chambre :
         self.est_propre = True
         return None
 
-    def	prendre(self) :
+    def	prendre(self, client) :
         """Déclare la chambre occupée"""
         self.est_occupee = True
+        self.client = client
         return None
 
     def	liberer(self) :
         """Déclare la chambre non-occupée"""
         self.est_occupee = False
         self.est_propre = False
+        self.client = None
         return None
+
+
+
+class Casino:
+    def __init__(self):
+        pass
+
+    def jouer_blackjack(self, client, mise:int=0):
+        argent_perdu, argent_gagne = bj.blackjack(mise)
+        compte.verser(argent_gagne)
+        compte.retirer(argent_perdu)
+
+    def jouer_machine(self, client, mise:int=0):
+        pass
 
 
 
@@ -100,7 +137,10 @@ class Hotel :
         self.chambres = chambres
         self.compte = cb.CompteBancaire('42',solde_compte_hotel)
         self.a_piscine = a_piscine
-        self.a_casino = a_casino
+        if a_casino:
+            self.casino = Casino()
+        else:
+            self.casino = False
 
     def get_nom(self):
         """Renvoie le nom de l'hôtel"""
@@ -162,13 +202,13 @@ class Hotel :
             compte.transferer(self.compte,chambre.tarif)
         return None
 
-    def jouer_blackjack(self, compte, mise:int=0):
-        if self.a_casino:
-            argent_perdu, argent_gagne = b.blackjack(mise)
-            compte.verser(argent_gagne)
-            compte.retirer(argent_perdu)
-        else:
-            print("Cet hôtel ne possède pas de casino.")
+##    def jouer_blackjack(self, compte, mise:int=0):
+##        if self.a_casino:
+##            argent_perdu, argent_gagne = bj.blackjack(mise)
+##            compte.verser(argent_gagne)
+##            compte.retirer(argent_perdu)
+##        else:
+##            print("Cet hôtel ne possède pas de casino.")
 
 
 
@@ -180,11 +220,11 @@ def test_hotel():
 
     mon_hotel = Hotel('Hotel California','Vesoul','40 rue du Général',liste_chambres,150000,True,True)
 
-    for _ in range(10):
-        chambre = r.choice(mon_hotel.chambres)
-        chambre.prendre()
-    print("Nombre de chambres d'hotel :",mon_hotel.nb_chambres())
-    print('Chambres disponibles :',mon_hotel.get_dispo())
+##    for _ in range(10):
+##        chambre = rd.choice(mon_hotel.chambres)
+##        chambre.prendre()
+##    print("Nombre de chambres d'hotel :",mon_hotel.nb_chambres())
+##    print('Chambres disponibles :',mon_hotel.get_dispo())
 
     mon_compte = cb.CompteBancaire('1234',7500)
     print("Solde hotel avant paiement d'une chambre :",mon_hotel.get_compte().get_solde())
@@ -198,8 +238,8 @@ def test_hotel():
     mon_hotel.add_chambres(nouv_liste_chambres)
     print("Nombre de chambres d'hotel après ajout de 5 :",mon_hotel.nb_chambres())
 
-    print("Solde avant partie de blackjack :",mon_compte.get_solde())
-    mon_hotel.jouer_blackjack(mon_compte,10)
-    print("Solde après partie de blackjack :",mon_compte.get_solde())
+##    print("Solde avant partie de blackjack :",mon_compte.get_solde())
+##    mon_hotel.jouer_blackjack(mon_compte,10)
+##    print("Solde après partie de blackjack :",mon_compte.get_solde())
 
 test_hotel()

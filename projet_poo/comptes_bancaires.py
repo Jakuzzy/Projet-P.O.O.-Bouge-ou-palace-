@@ -34,14 +34,14 @@
 
 
 
-class Client:
+class ClientBanque:
     """Classe défini par :
             - son nom
             - son adresse
             - ses comptes """
 
     def __init__(self,nom,adresse,compte):
-        """Créer un nouveau Client()"""
+        """Créer un nouveau ClientBanque()"""
         self.nom = nom
         self.adresse = adresse
         self.comptes = [compte]
