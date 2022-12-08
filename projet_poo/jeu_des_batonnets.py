@@ -1,5 +1,3 @@
-import random
-
 class Jeu_des_Batonnets:
     def __init__(self):
         self.baton = 21
