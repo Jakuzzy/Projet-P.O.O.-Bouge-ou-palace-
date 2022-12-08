@@ -18,7 +18,7 @@ class Jeu_des_Batonnets:
         self.last = "Joueur"
 
         if self.baton <= 0:
-            print(self.last,"a perdu !")
+            print(self.last,"A PERDU !")
             exit()
         else:
             print("| "*self.baton,"("+str(self.baton)+") bâtonnets restant(s) (JOUEUR)")
