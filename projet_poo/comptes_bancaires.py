@@ -100,15 +100,3 @@ class Banque:
             return client.get_comptes()
         else:
             return client
-
-    def supprimer_compte(self,nom,adresse,numero_compte):
-        """Fonctionne peut-être"""
-        client = self.get_client(nom,adresse)
-        if client:
-            for i in range(len(client.comptes)):
-                if client.comptes[i].numero == numero_compte:
-                    client.comptes.pop(i)
-                    return True
-                break
-        else:
-            return False
